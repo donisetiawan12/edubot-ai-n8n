@@ -1,0 +1,118 @@
+{
+  "name": "EduBot AI - Asisten Akademik Mahasiswa",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        -304
+      ],
+      "id": "adb9c7c6-c0ec-4d4c-9c8c-c0a35891f691",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "NtNa38s72cEHGwT2",
+          "name": "OpenRouter account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -400,
+        -304
+      ],
+      "id": "e5fa4186-3e94-43fa-8330-938f2331efd0",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=Anda adalah EduBot AI, asisten akademik virtual untuk mahasiswa. Jawab pertanyaan tentang teknologi informasi, pemrograman, kecerdasan buatan, jaringan komputer, basis data, dan pembelajaran umum. Gunakan bahasa Indonesia yang ramah, jelas, terstruktur, dan mudah dipahami. Berikan contoh sederhana bila diperlukan. Gunakan konteks percakapan sebelumnya untuk memahami pertanyaan lanjutan. Jika tidak mengetahui jawaban atau pertanyaan di luar cakupan, sampaikan keterbatasan secara jujur dan jangan mengarang informasi."
+        }
+      },
+      "id": "5251383d-c589-4f6a-8122-4e30c6fc9cbf",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -496,
+        -480
+      ]
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hallo 👋\n Ada Yang Bisa Saya Bantu??",
+        "options": {}
+      },
+      "id": "9c3b1bbd-d364-4cdb-8e63-412a1426ca1b",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -720,
+        -480
+      ],
+      "webhookId": "edubot-ai-chat-webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a0f26dab-2662-48b6-8ede-b54417287481",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc96f10ae7dc95d3c138575ba243a0a167923dbcb524841d451aadf9135d5fb3"
+  },
+  "nodeGroups": [],
+  "id": "0B6MaMqIgNb9YZ5F",
+  "tags": []
+}
